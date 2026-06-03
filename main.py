@@ -15,3 +15,7 @@ OUTPUT_FILE = "PARSED_INTRUSION_EMAILS.xlsx"
 # INPUTS
 DATE_START = datetime.strptime(input("Start date (YYYY-MM-DD): "), "%Y-%m-%d")
 DATE_END   = datetime.strptime(input("End date (YYYY-MM-DD): "), "%Y-%m-%d")
+
+# FUNCTION
+def get_emails(subject: str, start: datetime, end: datetime) -> list[dict]:
+    pass
