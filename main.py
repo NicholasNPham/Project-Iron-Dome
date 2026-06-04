@@ -101,3 +101,19 @@ def get_emails(subject: str, start: datetime, end: datetime) -> list[dict]:
             "dstip" : dstip,})
 
     return results_list
+
+def write_excel(result_list: list[dict], output_file: str):
+
+# Create a workbook and sheet
+workbook = openpyxl.Workbook()
+worksheet = workbook.active
+worksheet.title = "PARSED EMAILS"
+# Write styled headers
+
+
+
+
+# Sort data by IP frequency, NOT FOUND at the bottom
+# Write each row
+# Set column widths
+# Save the file
