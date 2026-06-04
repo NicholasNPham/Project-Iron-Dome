@@ -109,11 +109,18 @@ workbook = openpyxl.Workbook()
 worksheet = workbook.active
 worksheet.title = "PARSED EMAILS"
 # Write styled headers
+headers = ["DATE", "SRCIP", "SRCCOUNTRY", "PROTO", "SERVICE", "DSTIP"]
+header_font = Font(name="Times New Roman", size = 14, bold=True, italic=False, color="FFFFFF")
+header_fill = PatternFill(fill_type="solid", fgColor="2F4F7F")
+header_alignment = Alignment(horizontal="center", vertical="center", wrap_text=True,)
 
-
-
-
+for column, header in enumerate(headers, 1):
+    cell = worksheet.cell(row=1, column=column, value=header)
+    cell.font = header_font
+    cell.fill = header_fill
+    cell.alignment = header_alignment
 # Sort data by IP frequency, NOT FOUND at the bottom
+
 # Write each row
 # Set column widths
 # Save the file
