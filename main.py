@@ -104,22 +104,31 @@ def get_emails(subject: str, start: datetime, end: datetime) -> list[dict]:
 
 def write_excel(result_list: list[dict], output_file: str):
 
-# Create a workbook and sheet
-workbook = openpyxl.Workbook()
-worksheet = workbook.active
-worksheet.title = "PARSED EMAILS"
-# Write styled headers
-headers = ["DATE", "SRCIP", "SRCCOUNTRY", "PROTO", "SERVICE", "DSTIP"]
-header_font = Font(name="Times New Roman", size = 14, bold=True, italic=False, color="FFFFFF")
-header_fill = PatternFill(fill_type="solid", fgColor="2F4F7F")
-header_alignment = Alignment(horizontal="center", vertical="center", wrap_text=True,)
+    # Create a workbook and sheet
+    workbook = openpyxl.Workbook()
+    worksheet = workbook.active
+    worksheet.title = "PARSED EMAILS"
+    # Write styled headers
+    headers = ["DATE", "SRCIP", "SRCCOUNTRY", "PROTO", "SERVICE", "DSTIP"]
+    header_font = Font(name="Times New Roman", size = 14, bold=True, italic=False, color="FFFFFF")
+    header_fill = PatternFill(fill_type="solid", fgColor="2F4F7F")
+    header_alignment = Alignment(horizontal="center", vertical="center", wrap_text=True,)
 
-for column, header in enumerate(headers, 1):
-    cell = worksheet.cell(row=1, column=column, value=header)
-    cell.font = header_font
-    cell.fill = header_fill
-    cell.alignment = header_alignment
-# Sort data by IP frequency, NOT FOUND at the bottom
+    for column, header in enumerate(headers, 1):
+        cell = worksheet.cell(row=1, column=column, value=header)
+        cell.font = header_font
+        cell.fill = header_fill
+        cell.alignment = header_alignment
+
+    # Sort data by IP frequency, NOT FOUND at the bottom
+    ip_counts = Counter(email["srcip"] for email in result_list if email["srcip"] != "NOT FOUND")
+
+    found = [email for email in result_list if email["srcip"] != "NOT FOUND"]
+    not_found = [email for email in result_list if email["srcip"] == "NOT FOUND"]
+
+    found.sort(key=lambda email: ip_counts[email["srcip"]], reverse=True)
+
+    combined_ip = found + not_found
 
 # Write each row
 # Set column widths
