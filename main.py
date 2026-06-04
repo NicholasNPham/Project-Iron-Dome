@@ -129,7 +129,24 @@ def write_excel(result_list: list[dict], output_file: str):
     found.sort(key=lambda email: ip_counts[email["srcip"]], reverse=True)
 
     combined_ip = found + not_found
+    # Write each row
+    not_found_fill = PatternFill(fill_type="solid", fgColor="FFE4E1")
 
-# Write each row
-# Set column widths
-# Save the file
+    for row, entry in enumerate(combined_ip, 2):
+        worksheet.cell(row=row, column=1, value=entry["date"])
+        worksheet.cell(row=row, column=2, value=entry["srcip"])
+        worksheet.cell(row=row, column=3, value=entry["srccountry"])
+        worksheet.cell(row=row, column=4, value=entry["proto"])
+        worksheet.cell(row=row, column=5, value=entry["service"])
+        worksheet.cell(row=row, column=6, value=entry["dstip"])
+
+        count = ip_counts.get(entry["srcip"], 0)
+
+        worksheet.cell(row=row, column=7, value=count if count else "")
+
+        if entry["srcip"] == "NOT FOUND":
+            for col in range(1, 8):
+                worksheet.cell(row=row, column=col).fill = not_found_fill
+
+    # Set column widths
+    # Save the file
