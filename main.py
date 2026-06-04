@@ -109,7 +109,7 @@ def write_excel(result_list: list[dict], output_path: str):
     worksheet = workbook.active
     worksheet.title = "PARSED EMAILS"
     # Write styled headers
-    headers = ["DATE", "SRCIP", "SRCCOUNTRY", "PROTO", "SERVICE", "DSTIP"]
+    headers = ["DATE", "SRCIP", "SRCCOUNTRY", "PROTO", "SERVICE", "DSTIP", "COUNT"]
     header_font = Font(name="Times New Roman", size = 14, bold=True, italic=False, color="FFFFFF")
     header_fill = PatternFill(fill_type="solid", fgColor="2F4F7F")
     header_alignment = Alignment(horizontal="center", vertical="center", wrap_text=True,)
@@ -148,7 +148,7 @@ def write_excel(result_list: list[dict], output_path: str):
             for col in range(1, 8):
                 worksheet.cell(row=row, column=col).fill = not_found_fill
     # Set column widths
-    column_widths = {"A": 20, "B": 18, "C": 25, "D": 15, "E": 18, "F": 10, "G": 15}
+    column_widths = {"A": 20, "B": 18, "C": 25, "D": 15, "E": 18, "F": 18, "G": 15}
     for column, width in column_widths.items():
         worksheet.column_dimensions[column].width = width
     # Save the file
