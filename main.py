@@ -103,7 +103,15 @@ def get_emails(subject: str, start: datetime, end: datetime) -> list[dict]:
     return results_list
 
 def write_excel(result_list: list[dict], output_path: str):
+    """
+    Write parsed email data to a formatted Excel workbook sorted by IP frequency.
+    NOT FOUND entries are pushed to the bottom and highlighted in red.
 
+    Args:
+        result_list (list[dict]): Output from get_emails(). Each dict contains
+                                  'date', 'srcip', 'srccountry', 'proto', 'service', 'dstip'.
+        output_path (str): File path for the .xlsx output.
+    """
     # Create a workbook and sheet
     workbook = openpyxl.Workbook()
     worksheet = workbook.active
