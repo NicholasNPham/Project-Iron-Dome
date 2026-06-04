@@ -38,7 +38,7 @@ def get_emails(subject: str, start: datetime, end: datetime) -> list[dict]:
     inbox = None
 
     for store in namespace.Stores:
-        if store.DisplayName == "Alerts":
+        if store.DisplayName == "alerts":
             inbox = store.GetDefaultFolder(6)
             break
 
@@ -102,7 +102,7 @@ def get_emails(subject: str, start: datetime, end: datetime) -> list[dict]:
 
     return results_list
 
-def write_excel(result_list: list[dict], output_file: str):
+def write_excel(result_list: list[dict], output_path: str):
 
     # Create a workbook and sheet
     workbook = openpyxl.Workbook()
@@ -147,6 +147,14 @@ def write_excel(result_list: list[dict], output_file: str):
         if entry["srcip"] == "NOT FOUND":
             for col in range(1, 8):
                 worksheet.cell(row=row, column=col).fill = not_found_fill
-
     # Set column widths
+    column_widths = {"A": 20, "B": 18, "C": 25, "D": 15, "E": 18, "F": 10, "G": 15}
+    for column, width in column_widths.items():
+        worksheet.column_dimensions[column].width = width
     # Save the file
+    workbook.save(output_path)
+    print(f"Done. {len(result_list)} rows written to {output_path}")
+
+if __name__ == "__main__":
+    data = get_emails(SUBJECT, DATE_START, DATE_END)
+    write_excel(data, OUTPUT_FILE)
